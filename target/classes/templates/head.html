@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="icon" href="data:,">
+    <meta charset="UTF-8"/>
+    <link rel="icon" href="data:,">
+    <title>Список книг</title>
+
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">Список книг</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="logout">Выход
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <div sec:authorize="hasAuthority(':write')"> 
+                <li class="nav-item">
+                    <a class="nav-link" href="addNewBook">Добавление новой Книги</a>
+                </li>
+                </div>
+                <div sec:authorize="hasAuthority(':write')"> 
+                <li class="nav-item">
+                    <a class="nav-link" href="addNewCategory">Добавление новой Категории</a>
+                </li>
+                </div>
+                
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div>
+	<p/>
+	<div>
+		<form th:action="Search"  class="row">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Поиск:&nbsp;
+			<input type="text" name="keyword" required />
+			&nbsp;
+			<input type="submit" name="Search" value="Найти"/>
+			&nbsp;
+			<input type="button" name="Clear" value="Очистить"/>
+		</form>
+	</div>
+	
+    <div class="row">
+        <div class="col">
+            <ul class="nav nav-tabs mt-5" id="myTabs">
+                <li class="nav-item"><a href="#tab" data-url="/tab" class="nav-link active">Общее</a></li>
+                <div th:each="category : ${category}">
+                <li class="nav-item"><a th:href="'#' + ${category.idcategory}" th:data-url="'/' + ${category.idcategory}" class="nav-link" th:text="${category.Name}"></a></li>
+                </div>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab">Active panel</div>
+                <div th:each="category : ${category}">
+                <div class="tab-pane fade" th:id="${category.idcategory}">1</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+<script>
+    var href2
+    $('#myTabs a').click(function (e) {
+        e.preventDefault();
+
+        var url = $(this).attr("data-url");///1
+        var href = this.hash;// #1
+        var pane = $(this);// 1
+ 		if (href != '#tab'){ ($('#tab').hide());}
+        $(href2).hide();
+        $(href).show() 
+        // ajax load from data-url       
+        $(href).load(url, function (result) {
+            pane.tab('show');
+        });
+        href2=href
+    });
+
+    // load first tab content
+    $('#tab').load($('.nav-link.active').attr("data-url"), function (result) {
+    });
+</script>
+
+</body>
+</html>

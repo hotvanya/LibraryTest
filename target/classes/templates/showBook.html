@@ -1,0 +1,60 @@
+
+<head>
+<link rel="icon" href="data:,">
+<title>Список книг</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <style>
+			table {
+			    font-family: arial, sans-serif;
+			    border-collapse: collapse;
+			    width: 100%;
+			}
+			 
+			td, th {
+			    border: 1px solid #dddddd;
+			    text-align: left;
+			    padding: 8px;
+			}
+			 
+			tr:nth-child(even) {
+			    background-color: #dddddd;
+			}
+		</style>
+        </head>
+    <body>
+    	<!-- <a th:href="login">Авторизация</a>  -->
+        <h2></h2>
+		<!--<a href=addNewBook>Добавление новой Книги</a>
+    	<a href=addNewCategory>Добавление новой Категории</a> -->
+    	
+        <table>
+            <tr>
+                <th>Название</th>
+                <th>Автор</th>
+                <th>Описание</th>
+                <th>Идентификатор</th>
+                <!-- <th>Категория</th> -->
+                <div sec:authorize="hasAuthority(':write')">
+                <th></th>
+                </div>
+            </tr>
+
+            <div th:each="book : ${books}">
+                <tr>
+                    <td th:text="${book.Name}"/>
+                    <td th:text="${book.Author}"/>
+                    <td th:text="${book.Description}"/>
+                    <td th:text="${book.id}"/>
+                    <!-- <td th:text="${book.Category}"/> -->
+					<div sec:authorize="hasAuthority(':write')">
+                    <td><a th:href="'/'+ ${book.id} + '/edit'" class="btn btn-warning">Редактировать</a><br>
+                    <form th:action="'/'+ ${book.id} + '/remove'" method="POST">                    
+                    	<button  class="btn btn-warning" type="submit">Удалить</button>
+                    </form>
+                    </td>
+                    </div>
+                </tr>
+             </div>
+
+        </table>
+    </body>
