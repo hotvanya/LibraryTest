@@ -1,5 +1,5 @@
 # LibraryTest
-##Technologies
+## Technologies
 - Java 11
 - Spring Boot, Spring MVC, Spring Security
 - Maven
@@ -8,5 +8,6 @@
 - bootstrap
 - hibernate
 
+## Run application
 The work was done in eclipse.
 Launch file: bin->src->main->java->com->javalibrary->LibraryTest->LibraryTestApplication
